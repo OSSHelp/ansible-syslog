@@ -1,0 +1,38 @@
+---
+# defaults file for syslog
+syslog_setup: full
+create_user: false
+create_directory: false
+install_server: true
+default_server: rsyslog
+default_service: rsyslog
+extra_packages:
+#  - rsyslog-czmq
+#  - rsyslog-doc
+#  - rsyslog-elasticsearch
+#  - rsyslog-gnutls
+#  - rsyslog-gssapi
+#  - rsyslog-hiredis
+#  - rsyslog-kafka
+#  - rsyslog-mongodb
+#  - rsyslog-mysql
+#  - rsyslog-pgsql
+#  - rsyslog-relp
+
+syslog_accept_logs_from_containers: false
+syslog_containers_log_file: '/var/log/lxc-containers.log'
+syslog_custom_params: []
+syslog_generate_custom_cfg:
+  enabled: false
+  template_path: ''
+  target_file_name: ''
+
+syslog_user:
+  xenial: {shell: /bin/false}
+  bionic: {shell: /usr/sbin/nologin}
+  focal: {shell: /usr/sbin/nologin}
+
+syslog_groups:
+  xenial: [adm]
+  bionic: [adm]
+  focal: [adm, tty]

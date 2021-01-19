@@ -1,0 +1,20 @@
+---
+- name: generate configuration file with custom params
+  template:
+    src: osshelp.conf.j2
+    dest: /etc/rsyslog.d/osshelp.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: syslog_accept_logs_from_containers or syslog_custom_params | length > 0
+  notify: restart rsyslog service
+
+- name: generate configuration file from custom template
+  template:
+    src: "{{ syslog_generate_custom_cfg.template_path | mandatory }}"
+    dest: "/etc/rsyslog.d/{{ syslog_generate_custom_cfg.target_file_name | mandatory }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: syslog_generate_custom_cfg.enabled
+  notify: restart rsyslog service

@@ -1,0 +1,11 @@
+{% if syslog_accept_logs_from_containers and syslog_containers_log_file|length %}
+if $fromhost-ip startswith '10.' then {{ syslog_containers_log_file }}
+
+{% endif %}
+{% if syslog_custom_params is defined and syslog_custom_params|length %}
+{% for item in syslog_custom_params %}
+{{ item }}
+& stop
+
+{% endfor %}
+{% endif %}

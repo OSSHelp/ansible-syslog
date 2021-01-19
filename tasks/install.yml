@@ -1,0 +1,64 @@
+---
+- name: gather required facts
+  setup:
+    gather_subset: [min]
+  when: ansible_distribution_release is not defined
+
+- name: add syslog user
+  user:
+    name: syslog
+    groups: "{{ syslog_groups[ansible_distribution_release] }}"
+    create_home: no
+    home: /home/syslog
+    shell: "{{ syslog_user[ansible_distribution_release].shell }}"
+    system: yes
+  when: create_user
+
+- name: create /var/log
+  file:
+    path: /var/log
+    state: directory
+    owner: root
+    group: syslog
+    mode: 0775
+  when: create_directory and not install_server
+
+- name: install server
+  apt:
+    name: "{{ default_server }}"
+    update_cache: yes
+    cache_valid_time: 86400
+  when: install_server
+
+- name: install modules
+  apt:
+    name: "{{ extra_packages }}"
+    update_cache: yes
+    cache_valid_time: 86400
+  when: install_server and extra_packages
+
+- name: enable service
+  service:
+    name: "{{ default_service }}"
+    enabled: yes
+    state: started
+  when: install_server
+
+- name: create systemd unit override dir (focal)
+  file:
+    path: /etc/systemd/system/rsyslog.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_distribution_release == "focal"
+
+- name: create systemd unit override (focal)
+  copy:
+    src: systemd_unit_override
+    dest: /etc/systemd/system/rsyslog.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_release == "focal"
+  notify: ["reload syslog unit", "restart rsyslog service"]
