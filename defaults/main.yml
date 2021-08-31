@@ -36,3 +36,5 @@ syslog_groups:
   xenial: [adm]
   bionic: [adm]
   focal: [adm, tty]
+
+syslog_install_logrotate: true

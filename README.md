@@ -38,6 +38,7 @@ Installs selected syslog server (rsyslog/syslog-ng/etc) and creates system user 
 | syslog_accept_logs_from_containers | Boolean, when set to "true", the logs from containers will be accepted and saved to syslog_containers_log_file. Role will generate `/etc/rsyslog.d/osshelp.conf` with needed params. |
 | syslog_containers_log_file | Absolute path to file where containers logs should be saved. |
 | syslog_custom_params | Array with strings to add to `/etc/rsyslog.d/osshelp.conf`. Empty by default. |
+| syslog_install_logrotate | Install logrotate. True by default |
 
 ### Misc
 

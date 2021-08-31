@@ -62,3 +62,10 @@
     mode: 0644
   when: ansible_distribution_release == "focal"
   notify: ["reload syslog unit", "restart rsyslog service"]
+
+- name: install logrotate
+  apt:
+    name: logrotate
+    update_cache: yes
+    cache_valid_time: 86400
+  when: syslog_install_logrotate
