@@ -21,6 +21,10 @@ extra_packages:
 
 syslog_accept_logs_from_containers: false
 syslog_containers_log_file: '/var/log/lxc-containers.log'
+syslog_reception:
+  enabled: false
+  protocol: udp
+  port: 514
 syslog_custom_params: []
 syslog_generate_custom_cfg:
   enabled: false

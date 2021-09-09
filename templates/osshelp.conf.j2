@@ -1,3 +1,13 @@
+{% if syslog_reception.enabled and syslog_reception.protocol == 'tcp' %}
+module(load="imtcp")
+input(type="imtcp" port="{{ syslog_reception.port }}")
+
+{% endif %}
+{% if syslog_reception.enabled and syslog_reception.protocol == 'udp' %}
+module(load="imudp")
+input(type="imudp" port="{{ syslog_reception.port }}")
+
+{% endif %}
 {% if syslog_accept_logs_from_containers and syslog_containers_log_file|length %}
 if $fromhost-ip startswith '10.' then {{ syslog_containers_log_file }}
 
